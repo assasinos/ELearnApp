@@ -1,0 +1,64 @@
+﻿@page
+@model ELearnApp.Pages.Admin.AddCourse
+
+@{
+    Layout = "Shared/_AdminLayout";
+    ViewData["Title"] = "Add Course";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Course Editor
+        </div>
+        <div class="card-body p-2">
+
+            <form id="CourseFrom">
+                <div class="form-group mt-3">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" >
+                </div>
+                <div class="form-group mt-3">
+                    <label for="description">Description:</label>
+                    <textarea name="description" class="form-control" id="description" ></textarea>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="overview">Overview:</label>
+                    <textarea name="overview" class="form-control" id="overview" ></textarea>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="imgsrc">Image Source:</label>
+                    @*Todo: Add a Script updating IMG *@
+                    <span>
+                        <img class="rounded-circle" style="max-height: 4vh; min-height: 2vh" src="/Assets/Courses/lorem.webp" alt="Course Image Source Display" id="CourseImg"/>
+                        <input type="text" class="form-control" id="imgsrc" name="imgsrc" value="/Assets/Courses/lorem.webp">
+                    </span>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="Instructor.user_uid">Instructor:</label>
+                    <select name="Instructor.user_uid" class="form-select form-select mb-3" aria-label=".form-select-lg" id="Instructor.user_uid" >
+                        <option selected hidde value="">Select Instructor</option>
+                        @foreach (var instructor in Model.Instructors)
+                        {
+                            <option value="@instructor.user_uid">@instructor.full_name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="createdAt">Creation Date:</label>
+                    <input type="text" class="form-control" id="createdAt" value="NOW" disabled>
+                </div>
+                <div class="form-group mt-3">
+                    <label class="form-check-label" for="featured">Featured:</label>
+                    <input type="checkbox" class="form-check-input" id="featured" name="featured" value="true">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3" id="CreateCourseBTN">Create Course</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/Admin/CourseCreator.min.js"></script>
+<script src="/js/Toast.min.js"></script>
+<script>const img = $("#CourseImg"); $("#imgsrc").on("focusout", (e)=>{img.attr("src",e.target.value);});</script>

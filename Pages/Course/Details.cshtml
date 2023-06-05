@@ -1,0 +1,57 @@
+﻿@page "/Course/{course_uid}"
+@model ELearnApp.Pages.Course.Details
+
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = Model.Course.title;
+}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.Course.imgsrc" alt="Course image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h1 class="mb-3">@Model.Course.title</h1>
+            <h5>Overview</h5>
+            <p>@Model.Course.overview</p>
+            <p >@Model.Course.description</p>
+      
+            <p class="">
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">
+                    Lessons
+                </button>
+                @*
+                Todo: Add a client-side script to check if user has access to the course or maybe redirect to payment page
+                *@
+                
+                <a class="btn btn-secondary"  href=@($"/Course/{Model.Course.course_uid}/Lessons")>Enroll Now</a>
+            </p>
+      
+            
+            <div class="collapse" id="collapse">
+                <ol class="list-group list-group-numbered">
+                    @foreach (var lesson in Model.Lessons)
+                    {
+                        <li class="list-group-item">@lesson.lesson_name</li>
+                    }
+            
+                </ol>
+            </div>
+      
+            
+            <hr class="my-4">
+            <div class="media d-flex align-items-center">
+                <img src="@Model.Course.Instructor.imgsrc" alt="Instructor's Profile Picture" class="rounded-circle img-fluid me-2" width="64" height="64">
+                <div class="media-body">
+                    <p class="text-muted">Instructor: @Model.Course.Instructor.full_name</p>
+                    <p>@Model.Course.Instructor.bio</p>
+                </div>
+            </div>
+
+      
+      
+      
+        </div>
+    </div>
+</div>

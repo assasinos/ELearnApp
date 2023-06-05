@@ -1,0 +1,40 @@
+﻿@page
+@model ELearnApp.Pages.Admin.Instructors
+
+@{
+    Layout = "Shared/_AdminLayout";
+    ViewData["Title"] = "Instructors";
+    
+}
+
+
+
+
+<div class="container-fluid d-flex flex-row justify-content-center">
+
+    <div class="row justify-content-center gap-3 mb-1">
+        <div class="card text-white bg-light mb-3 p-2 g-col-6 shadow" style="max-width: 18rem;">
+            <div class="card-header text-dark text-center">Create new course</div>
+            <div class="card-body text-dark">
+                <img src="/Assets/Courses/AddOutline.svg" alt="Course picture" class="card-img-top mb-2">
+            </div>
+            <a asp-page="/Admin/AddInstructor" class="btn btn-secondary">Add new instructor</a>
+        </div>
+        @foreach (var user in Model.InstructorModels)
+        {
+            <div class="card text-white bg-light mb-3 p-2 g-col-6 shadow" style="max-width: 18rem;">
+                <div class="card-header text-dark text-center">@user.username</div>
+                <div class="card-body text-dark">
+                    <img src="@user.imgsrc" alt="Course picture" class="card-img-top mb-2">
+                    <p class="card-text ">
+                        <span class="text-secondary fw-bold">Full name:</span> @user.full_name
+                    </p>
+                </div>
+                <a asp-page="/Admin/Instructor" asp-route-userUid="@user.user_uid" class="btn btn-secondary">Edit Instructor</a>
+            </div>
+        }
+    </div>
+
+
+    @* Maybe Add Pagination Here *@
+</div>

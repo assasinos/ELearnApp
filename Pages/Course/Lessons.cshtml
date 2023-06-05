@@ -1,0 +1,55 @@
+﻿@page "/Course/{course_uid}/Lessons"
+@model ELearnApp.Pages.Course.Lessons
+
+@{
+    Layout = "Shared/_Layout";
+  ViewData["Title"] = Model.lessonModel.lesson_name;
+}
+
+
+@*shouldn't be here but i can leave it for now*@
+<style>
+  .lesson-container img {
+        max-width: 100%;
+        max-height: 40vh;
+        height: auto;
+      }
+      .lesson-container {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        margin: 20px auto;
+      }
+    
+</style>
+
+<div class="container" id="container" data-uid="@Model.lessonModel.course_uid">
+  <div class="lesson-container text-center" id="Lesson">
+    <h1>@Model.lessonModel.lesson_name</h1>
+    
+    @*Should be safe bcs of the way it's stored in the db*@
+    @Html.Raw(Model.lessonModel.lesson_content)
+  </div>
+      
+      
+  <nav aria-label="Lesson navigation">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled" id="Previous" data-max="@Model.LessonCount">
+        <a class="page-link" type="button" tabindex="-1" aria-disabled="true"  >Previous</a>
+      </li>
+      @for (int i = 1; i <= Model.LessonCount; i++)
+      {
+        <li class="page-item" >
+          <a type="button" class="page-link num" id="@i">@i</a>
+        </li>
+      }
+
+      <li class="page-item" id="Next">
+        <a class="page-link" type="button">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<script src="/js/LessonPagination.min.js"></script>

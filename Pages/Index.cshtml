@@ -1,0 +1,71 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Home page";
+}
+<style>
+  .course-img{
+  width: 10%;
+  height: auto;
+  }
+</style>
+
+<div id="hero" class="bg-secondary text-white text-center p-5">
+  <div class="container">
+    <h1 class="display-4">Learn new skills and advance your career</h1>
+    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam iaculis egestas laoreet. Etiam faucibus massa sed risus lacinia in vulputate dolor imperdiet.</p>
+    <a asp-page = "/Course/Index" class="btn btn-primary">Browse courses</a>
+  </div>
+</div>
+
+<div id="featured-courses" class="container">
+    <h2 class="mb-4 text-center">Featured Courses</h2>
+    <div class="row justify-content-center">
+      
+      
+        @foreach (var course in Model.Featured)
+        {
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+              <a asp-area="" aasp-area="" asp-page="/Course/Details" asp-route-course_uid="@course.course_uid"><img class="card-img-top" src="@course.imgsrc" alt="Course thumbnail"></a>
+              <div class="card-body">
+                <h5 class="card-title"><a class="link-secondary text-decoration-none" asp-area="" asp-page="/Course/Details" asp-route-course_uid="@course.course_uid">@course.title</a></h5>
+              </div>
+            </div>
+          </div>
+        }
+
+
+    </div>
+</div>
+
+<div id="testimonials" class="container mt-5">
+  <h2 class="mb-4">What Our Students Say</h2>
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="media d-flex align-items-center">
+          <img src="Assets/Students/student1.png" alt="Student 1" class="mr-3 rounded-circle" width="64" height="64">
+          <div class="media-body">
+            <p>"Nauczyłem się tak wiele na tym kursie! Prowadzący jest bardzo mądry i angażujący, a materiał jest dobrze zorganizowany i łatwy do zrozumienia"</p>
+            <p class="mt-0"><strong>- Bartek</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="media d-flex align-items-center">
+          <img src="Assets/Students/student2.png" alt="Student 1" class="mr-3 rounded-circle" width="64" height="64">
+          <div class="media-body">
+            <p>"Jestem bardzo zadowolony z jakości kursów na tej platformie. Brałem już kilka i bardzo dużo się nauczyłem. Serdecznie polecam!"</p>
+            <p class="mt-0"><strong>- Powerek</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+

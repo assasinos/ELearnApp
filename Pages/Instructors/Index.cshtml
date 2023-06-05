@@ -1,0 +1,23 @@
+﻿@page
+@model ELearnApp.Pages.Instructors.Index
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["title"] = "Instructors";
+}
+
+<div class="container mt-4">
+    @foreach (var instructor in @Model.Instructors)
+    {
+        <div class="card">
+            <div class="card text-dark mb-3">
+                <div class="card-header">Instructor</div>
+                <div class="card-body">
+                    <img src="@instructor.imgsrc" alt="Instructor Profile Picture" class="mr-3 rounded-circle" width="64" height="64"/>
+                    <h5 class="card-title">@instructor.full_name</h5>
+                    <p class="card-text">@instructor.bio</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

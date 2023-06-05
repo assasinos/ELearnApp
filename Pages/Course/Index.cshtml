@@ -1,0 +1,31 @@
+﻿@page
+@model ELearnApp.Pages.Course.Index
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["title"] = "Courses";
+}
+
+
+<div class="container p-3">
+  <div class="row gy-4">
+
+    @foreach( var course in Model.Courses)
+    {
+
+      <div class="col-lg-4 mb-3 d-flex align-items-stretch">
+        <div class="card">
+          <img src="@course.imgsrc" class="card-img-top img-fluid" alt="Course image">
+          <div class="card-body">
+            <h5 class="card-title">@course.title</h5>
+            <p class="card-text">@course.description</p>
+            <a asp-area="" asp-page="/Course/Details" asp-route-course_uid="@course.course_uid"  class="btn btn-primary">Learn more</a>
+          </div>
+        </div>
+      </div>
+      
+      
+    }
+  </div>
+  
+</div>

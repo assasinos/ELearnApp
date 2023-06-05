@@ -1,0 +1,42 @@
+﻿@page
+@model ELearnApp.Pages.Admin.AddInstructor
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+<div class="container">
+    <div class="card-group mt-3">
+
+        <div class="card">
+            <div class="card-header">
+                Instructor Editor
+            </div>
+            <div class="card-body p-2">
+
+                <form id="UserForm">
+
+                    <div class="form-group">
+                        <label for="username-input">Username:</label>
+                        <input type="text" class="form-control" id="username-input" placeholder="Enter username">
+                        <div style="height: 10vh; overflow: auto;">
+                            <div id="Suggestions"  class="d-flex flex-column p-2" style="height: 100%; width: 100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="user_uid">User UID:</label>
+                        <input name="user_uid" type="text" class="form-control" id="user_uid" value="" disabled>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3" id="UpdateUserBTN">Make User Instructor</button>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/Toast.min.js"></script>
+<script src="/js/Admin/InstructorCreator.min.js"></script>

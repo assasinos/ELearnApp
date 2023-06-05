@@ -1,0 +1,38 @@
+﻿@page
+@model ELearnApp.Pages.Admin.Courses
+
+@{
+    Layout = "Shared/_AdminLayout";
+    ViewData["Title"] = "Courses";
+}
+
+
+<div class="container-fluid d-flex flex-row justify-content-center">
+
+    <div class="row justify-content-center gap-3 mb-1">
+        <div class="card text-white bg-light mb-3 p-2 g-col-6 shadow" style="max-width: 18rem;">
+            <div class="card-header text-dark text-center">Create new course</div>
+            <div class="card-body text-dark">
+                <img src="/Assets/Courses/AddOutline.svg" alt="Course picture" class="card-img-top mb-2">
+            </div>
+            <a asp-page="/Admin/AddCourse" class="btn btn-secondary">Create Course</a>
+        </div>
+        @foreach (var course in Model.courseModels)
+        {
+            <div class="card text-white bg-light mb-3 p-2 g-col-6 shadow" style="max-width: 18rem;">
+                <div class="card-header text-dark text-center">@course.title</div>
+                <div class="card-body text-dark">
+                    <img src="@course.imgsrc" alt="Course picture" class="card-img-top mb-2">
+                    <p class="card-text ">
+                        <img class="rounded-circle" style="max-height: 4vh; min-height: 2vh;" src="@course.Instructor.imgsrc" alt="Instructor's profile picture"/>
+                        <span class="text-secondary fw-bold">Instructor:</span> @course.Instructor.full_name
+                    </p>
+                </div>
+                <a asp-page="/Admin/Course" asp-route-course_uid="@course.course_uid" class="btn btn-secondary">Edit Course</a>
+            </div>
+        }
+    </div>
+
+
+    @* Maybe Add Pagination Here *@
+</div>
