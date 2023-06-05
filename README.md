@@ -72,7 +72,7 @@ The E-LearnApp is a web application built with ASP.NET that provides an interact
    http://localhost:5000
    ```
 
-3. SQL creates default admin user with login "admin" and password "admin"
+3. SQL script creates default admin user with login "admin" and password "admin"
 
 4. Explore the course catalog and enroll in the desired courses.
 
