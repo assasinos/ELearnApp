@@ -24,7 +24,8 @@ public class Settings : PageModel
     
     public async Task<IActionResult> OnGet()
     {
-        var user_uid = User.FindFirst("user_uid")!.Value;
+        var user_uid = User.FindFirst("user_uid")?.Value;
+        if (user_uid is null) return RedirectToPage("/Index");
         UserInformation = await GetUserInfo(user_uid);
         
         

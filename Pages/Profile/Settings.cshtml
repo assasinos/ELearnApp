@@ -8,7 +8,7 @@
 
 <div class="container">
     <div class="row p-2">
-        <p class="fs-1">Personal Information</p>
+        <p class="fs-2">Personal Information</p>
         <div class="col">
             <form id="PersonalForm">
                 <div class="form-group mt-3">
@@ -26,13 +26,34 @@
                     <label for="password">Password:</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Insert Your Password">
                 </div>
-                <button type="submit" class="btn btn-primary mt-2" id="PersonalInfo">Update Personal Information</button>
+                <button type="submit" class="btn btn-primary mt-2" id="PersonalInfoBTN">Update Personal Information</button>
             </form>
         </div>
     </div>
     <hr/>
     <div class="row p-2">
-        
+        <p class="fs-2">Change your password</p>
+        <div class="col">
+            <form id="PasswordForm">
+
+                <div class="form-group mt-3">
+                    <label for="oldpassword">Current Password:</label>
+                    <input type="password" class="form-control" id="oldpassword" name="oldpassword" placeholder="Insert Your current Password">
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="newpassword">New Password:</label>
+                    <input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Insert Your new Password">
+                </div>
+                
+                <div class="form-group mt-3">
+                    <label for="newpasswordrepeat">Repeat your Password:</label>
+                    <input type="password" class="form-control" id="newpasswordrepeat" name="newpasswordrepeat" placeholder="Insert Your new Password">
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-2" id="PasswordBTN">Update Password</button>
+            </form>
+        </div>
     </div>
 </div>
 
