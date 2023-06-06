@@ -101,6 +101,119 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    [IsAuthenticated]
+    [ProducesResponseType(typeof(OkResult), 200)]
+    [ProducesResponseType(typeof(ProblemDetails), 400)]
+    [HttpPut]
+    public async Task<IActionResult> UpdatePersonalInfo(UserModel userModel)
+    {
+
+        var validator = new PersonalInfoValidator();
+        var ValidationResult = await validator.ValidateAsync(userModel);
+        if (!ValidationResult.IsValid)
+        {
+            return BadRequest(ValidationResult.Errors.FirstOrDefault().ErrorMessage);
+        }
+
+
+        var user_uid = await User.GetUserUID();
+        
+        //Check if password is correct
+        var password = await _mySqlConnection.QuerySingleOrDefaultAsync<string>("Select password from users where  user_uid = @user_uid", new {user_uid});
+        
+        
+        if (password != await userModel.password.ComputeHash()) return BadRequest("Password is incorrect");
+        
+        //Update Info
+        
+        var result = await _mySqlConnection.ExecuteAsync("UPDATE `users` SET `full_name` = @full_name, `email` = @email WHERE `user_uid` = @user_uid", new {userModel.full_name, userModel.email, user_uid});
+
+        if (result != 1)
+        {
+            return BadRequest("Something went wrong");
+        }
+        
+        return Ok();
+    }
+
+    [IsAuthenticated]
+    [HttpPatch]
+    public async Task<IActionResult> UpdatePassword(string OldPassword, string NewPassword)
+    {
+
+        if (NewPassword is null || OldPassword is null)
+        {
+            return BadRequest("Password cannot be empty");
+        }
+        
+        
+        var user_uid = await User.GetUserUID();
+        
+        //Check if password is correct
+        var password = await _mySqlConnection.QuerySingleOrDefaultAsync<string>("Select password from users where  user_uid = @user_uid", new {user_uid});
+        
+        
+        if (password != await OldPassword.ComputeHash()) return BadRequest("Password is incorrect");
+        
+        
+        //update password
+        NewPassword = await NewPassword.ComputeHash();
+        var result = await _mySqlConnection.ExecuteAsync("UPDATE `users` SET `password` = @NewPassword WHERE `user_uid` = @user_uid", new {NewPassword, user_uid});
+
+        if (result != 1)
+        {
+            return BadRequest("Something went wrong");
+        }
+
+        return Ok();
+    }
+
+    [IsAuthenticated]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAccount(string confirmpassword)
+    {
+        if (confirmpassword is null)
+        {
+            return BadRequest("Password cannot be empty");
+        }
+        
+        
+        var user_uid = await User.GetUserUID();
+        
+        //Check if password is correct
+        var user = await _mySqlConnection.QuerySingleOrDefaultAsync<UserModel>("Select password,role from users where  user_uid = @user_uid", new {user_uid});
+        
+        
+        if (user.password != await confirmpassword.ComputeHash()) return BadRequest("Password is incorrect");
+
+        
+        
+        //Constrains
+        // Maybe add some flag and after certain time delete account and it's orders
+        await _mySqlConnection.ExecuteAsync("delete from orders where user_uid = @user_uid", new { user_uid });
+        await _mySqlConnection.ExecuteAsync("delete from user_courses where user_uid = @user_uid", new { user_uid });
+        //Maybe disallow removal of admin account
+        if (user.role == UserRole.Instructor)
+        {
+            var adminUID =
+                await _mySqlConnection.QuerySingleOrDefaultAsync<string>(
+                    "Select user_uid from users where role = 'admin' LIMIT 1");
+
+            await _mySqlConnection.ExecuteAsync("Update courses set instructor_uid = @adminUID where instructor_uid = @user_uid", new { adminUID, user_uid });
+        }
+        
+        
+        var result =
+            await _mySqlConnection.ExecuteAsync("Delete from users where user_uid = @user_uid", new { user_uid });
+
+        if (result == 0)
+        {
+            return BadRequest("Something went Wrong");
+        }
+
+        return Ok();
+    }
+
 
 
 }
