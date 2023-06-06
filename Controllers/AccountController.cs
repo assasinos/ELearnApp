@@ -168,6 +168,51 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    [IsAuthenticated]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAccount(string confirmpassword)
+    {
+        if (confirmpassword is null)
+        {
+            return BadRequest("Password cannot be empty");
+        }
+        
+        
+        var user_uid = await User.GetUserUID();
+        
+        //Check if password is correct
+        var user = await _mySqlConnection.QuerySingleOrDefaultAsync<UserModel>("Select password,role from users where  user_uid = @user_uid", new {user_uid});
+        
+        
+        if (user.password != await confirmpassword.ComputeHash()) return BadRequest("Password is incorrect");
+
+        
+        
+        //Constrains
+        // Maybe add some flag and after certain time delete account and it's orders
+        await _mySqlConnection.ExecuteAsync("delete from orders where user_uid = @user_uid", new { user_uid });
+        await _mySqlConnection.ExecuteAsync("delete from user_courses where user_uid = @user_uid", new { user_uid });
+        //Maybe disallow removal of admin account
+        if (user.role == UserRole.Instructor)
+        {
+            var adminUID =
+                await _mySqlConnection.QuerySingleOrDefaultAsync<string>(
+                    "Select user_uid from users where role = 'admin' LIMIT 1");
+
+            await _mySqlConnection.ExecuteAsync("Update courses set instructor_uid = @adminUID where instructor_uid = @user_uid", new { adminUID, user_uid });
+        }
+        
+        
+        var result =
+            await _mySqlConnection.ExecuteAsync("Delete from users where user_uid = @user_uid", new { user_uid });
+
+        if (result == 0)
+        {
+            return BadRequest("Something went Wrong");
+        }
+
+        return Ok();
+    }
 
 
 
