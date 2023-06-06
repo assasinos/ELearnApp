@@ -1,8 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Security.Claims;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using WebApplication3.Extentions;
 using WebApplication3.Models;
 using WebApplication3.Validators;
 
@@ -29,10 +32,10 @@ public class UserController : ControllerBase
     [IsAuthenticated]
     public async Task<IActionResult> GetUser()
     {
-        var user_uid = User.FindFirst("user_uid").Value;
-        var users = await _mySqlConnection.QueryAsync<UserModel>("SELECT `username`,`role`,`imgsrc` FROM `users` WHERE `user_uid` = @user_uid ", new{user_uid});
+        var user_uid = await User.GetUserUID();
+        var user = await _mySqlConnection.QuerySingleOrDefaultAsync("SELECT `username`,`role`,`imgsrc` FROM `users` WHERE `user_uid` = @user_uid ", new{user_uid});
 
-        var user = users.SingleOrDefault();
+        
         
         
         return new JsonResult(new
@@ -42,6 +45,7 @@ public class UserController : ControllerBase
             user.imgsrc
         });
     }
+    
 
 
 }

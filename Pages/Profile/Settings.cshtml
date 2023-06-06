@@ -1,0 +1,41 @@
+﻿@page
+@model ELearnApp.Pages.Profile.Settings
+
+@{
+    Layout = "Shared/_Layout";
+}
+
+
+<div class="container">
+    <div class="row p-2">
+        <p class="fs-1">Personal Information</p>
+        <div class="col">
+            <form id="PersonalForm">
+                <div class="form-group mt-3">
+                    <label for="email">E-Mail:</label>
+                    <input type="text" class="form-control" id="email" name="email" value="@Model.UserInformation.email">
+                </div>
+
+                @* OR maybe use Registration model and 2 separate inputs for First name and surname *@
+                <div class="form-group mt-3">
+                    <label for="full_name">Full Name:</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" value="@Model.UserInformation.full_name">
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Insert Your Password">
+                </div>
+                <button type="submit" class="btn btn-primary mt-2" id="PersonalInfo">Update Personal Information</button>
+            </form>
+        </div>
+    </div>
+    <hr/>
+    <div class="row p-2">
+        
+    </div>
+</div>
+
+
+<script src="/js/UserSettings.min.js"></script>
+<script src="/js/Toast.min.js"></script>

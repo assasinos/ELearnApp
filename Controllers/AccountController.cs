@@ -101,6 +101,38 @@ public class AccountController : ControllerBase
         return Ok();
     }
 
+    [IsAuthenticated]
+    [ProducesResponseType(typeof(OkResult), 200)]
+    [ProducesResponseType(typeof(ProblemDetails), 400)]
+    [HttpPut]
+    public async Task<IActionResult> UpdatePersonalInfo(UserModel userModel)
+    {
+
+        var validator = new PersonalInfoValidator();
+        var result = await validator.ValidateAsync(userModel);
+        if (!result.IsValid)
+        {
+            return BadRequest(result.Errors.FirstOrDefault().ErrorMessage);
+        }
 
 
+        var user_uid = await User.GetUserUID();
+        
+        //Check if password is correct
+        var password = await _mySqlConnection.QuerySingleOrDefaultAsync<string>("Select password from users where  user_uid = @user_uid", new {user_uid});
+        
+        
+        if (password != await userModel.password.ComputeHash()) return BadRequest("Password is incorrect");
+        
+        //Update Info
+        
+        await _mySqlConnection.ExecuteAsync("UPDATE `users` SET `full_name` = @full_name, `email` = @email WHERE `user_uid` = @user_uid", new {userModel.full_name, userModel.email, user_uid});
+        
+        return Ok();
+    }
+
+
+    
+    
+    
 }
