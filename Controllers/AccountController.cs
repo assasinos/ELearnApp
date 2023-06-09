@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Dapper;
+using ELearnApp.Services.EmailServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -20,10 +21,12 @@ public class AccountController : ControllerBase
     private readonly ILogger<AccountController> _logger;
     private readonly MySqlConnection _mySqlConnection;
 
-    public AccountController(ILogger<AccountController> logger,MySqlConnection connection)
+    private readonly IEmailService _emailService;
+    public AccountController(ILogger<AccountController> logger,MySqlConnection connection, IEmailService emailService)
     {
         _logger = logger;
         _mySqlConnection = connection;
+        _emailService = emailService;
     }
 
     [HttpPost]
@@ -65,29 +68,51 @@ public class AccountController : ControllerBase
     [IsNotAuthenticated]
     public async Task<IActionResult> Register([Required] RegisterModel registerModel)
     {
-
-        if (!ModelState.IsValid)
+        
+        var validator = new RegistrationValidator();
+        var ValidationResult = await validator.ValidateAsync(registerModel);
+        if (!ValidationResult.IsValid)
         {
-            return BadRequest(ModelState.FirstOrDefault(e=> e.Value.ValidationState == ModelValidationState.Invalid)
-                .Value.Errors.FirstOrDefault().ErrorMessage);
+            return BadRequest(ValidationResult.Errors.FirstOrDefault()?.ErrorMessage);
         }
         
         
         //Check if username or email already is used
 
-        var result = await _mySqlConnection.QueryAsync<UserModel>("SELECT * FROM `users` WHERE `email` = @email or `username` = @username",
+        var UsersResult = await _mySqlConnection.QueryFirstOrDefaultAsync<UserModel>("SELECT * FROM `users` WHERE `email` = @email or `username` = @username",
         new {registerModel.email, registerModel.username});
-
-        if (result.FirstOrDefault() is not null)
+        var RegistrationResult = await _mySqlConnection.QueryFirstOrDefaultAsync<UserModel>("SELECT * FROM `registrations` WHERE `email` = @email or `username` = @username",
+            new {registerModel.email, registerModel.username});
+        if (UsersResult is not null || RegistrationResult is not null)
         {
-            return BadRequest("Username or email is already in use");
+            return BadRequest("User already exists");
         }
 
         registerModel.password = await registerModel.password.ComputeHash();
 
-        await _mySqlConnection.ExecuteAsync("INSERT INTO `users`(`username`, `password`, `email`, `full_name`) VALUES (@username,@password,@email,@full_name)", registerModel);
-        //Add e-mail in future
+        var registrationuid = await _mySqlConnection.QuerySingleAsync<string>("INSERT INTO `registrations`(`username`, `password`, `email`, `full_name`) VALUES (@username,@password,@email,@full_name) RETURNING `registration_uid`", registerModel);
         
+        //Send Email
+        //TODO: Make Mail body prettier
+        _emailService.SendEmail(registerModel.email, "Confirm your email", $"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Account Confirmation</title>
+            </head>
+            <body>
+            <h1>Account Confirmation</h1>
+            <p>Dear {registerModel.full_name},</p>
+            <p>Thank you for creating an account. To activate your account, please click the link below:</p>
+            <p><a href="https://{Request.Host.Value}/Profile/ConfirmAccount?token={registrationuid}">Activate Account</a></p>
+            <p>If you did not create this account, please ignore this email.</p>
+            <p>Best regards,</p>
+            <p>ELearnapp</p>
+            </body>
+            </html>
+            """);
         return Ok();
     }
 

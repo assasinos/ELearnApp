@@ -52,7 +52,21 @@ The E-LearnApp is a web application built with ASP.NET that provides an interact
 
    **Note:** Make sure you have MariaDB version 10.5.0 or higher, as the script may rely on specific features introduced in that version.
 
-6. Build the application:
+
+6. Configure the MailServer settings in the `appsettings.json` file. Edit the `MailServer` value with your mail server credentials:
+
+   ```json
+   "MailSettings": {
+   "Mail": "Mail From Which You Want To Send",
+   "DisplayName": "Displayname",
+   "Password": "Password to the Mail",
+   "Host": "Host",
+   "Port": Port,
+   "EnableSsl": set to true or false
+   }
+   ```
+
+7. Build the application:
 
    ```bash
    dotnet build
@@ -73,6 +87,7 @@ The E-LearnApp is a web application built with ASP.NET that provides an interact
    ```
 
 3. SQL script creates default admin user with login "admin" and password "admin"
+
 
 4. Explore the course catalog and enroll in the desired courses.
 
