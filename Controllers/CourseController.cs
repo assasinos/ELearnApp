@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using Dapper;
 using ELearnApp.Models;
 using ELearnApp.Validators;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 
-namespace WebApplication3.Controllers;
+namespace ELearnApp.Controllers;
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class CourseController :ControllerBase
