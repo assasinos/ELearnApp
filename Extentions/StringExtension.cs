@@ -1,8 +1,7 @@
-﻿using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace WebApplication3.Extentions;
+namespace ELearnApp.Extentions;
 
 public static class StringExtension
 {

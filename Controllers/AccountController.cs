@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Dapper;
+using ELearnApp.Extentions;
 using ELearnApp.Models;
 using ELearnApp.Services.EmailServices;
 using ELearnApp.Validators;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
-using WebApplication3.Extentions;
 
 namespace ELearnApp.Controllers;
 

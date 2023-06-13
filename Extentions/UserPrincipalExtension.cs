@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace WebApplication3.Extentions;
+namespace ELearnApp.Extentions;
 
 public static class UserPrincipalExtension
 {
