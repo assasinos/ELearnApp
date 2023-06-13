@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using Dapper;
+using ELearnApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySqlConnector;
-using WebApplication3.Models;
 
 namespace ELearnApp.Pages.Course;
 

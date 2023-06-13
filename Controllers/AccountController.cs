@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Dapper;
+using ELearnApp.Models;
 using ELearnApp.Services.EmailServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Server.HttpSys;
 using MySqlConnector;
 using WebApplication3.Extentions;
-using WebApplication3.Models;
 using WebApplication3.Validators;
 
 namespace WebApplication3.Controllers;

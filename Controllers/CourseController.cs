@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using Dapper;
+using ELearnApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
-using WebApplication3.Models;
 using WebApplication3.Validators;
 
 namespace WebApplication3.Controllers;

@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using WebApplication3.Models;
+﻿using ELearnApp.Models;
+using FluentValidation;
 
 namespace WebApplication3.Validators;
 
