@@ -1,0 +1,38 @@
+﻿@page
+@model ELearnApp.Pages.Instructor.Courses
+
+@{
+    Layout = "Shared/_InstructorLayout";
+    ViewData["Title"] = "Your Courses";
+}
+
+
+<div class="container justify-content-center  mb-1">
+
+    <div class="row">
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-light m-2 p-2 col shadow">
+                <div class="card-header text-dark text-center">Create new course</div>
+                <div class="card-body text-dark">
+                    <img src="/Assets/Courses/AddOutline.svg" alt="Course picture" class="card-img-top mb-2">
+                </div>
+                <a asp-page="/Instructor/AddCourse" class="btn btn-secondary">Create Course</a>
+            </div>
+        </div>
+        @foreach (var course in Model.InstructorCourses)
+        {
+            <div class="col-md-3">
+                <div class="card text-white bg-light m-2 p-2 col shadow">
+
+                    <div class="card-header text-dark text-center">@course.title</div>
+                    <div class="card-body text-dark">
+                        <img src="@course.imgsrc" alt="Course picture" class="card-img-top mb-2">
+                    </div>
+                    <a href="/Instructor/Course/@course.course_uid" class="btn btn-secondary">Edit Course</a>
+                </div>
+            </div>
+            
+        }
+    </div>
+</div>
