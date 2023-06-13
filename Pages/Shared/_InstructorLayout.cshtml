@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <style>.profile-img{max-width: 3vw;min-width: 1vw;}
+
+</style>
+</head>
+<body>
+
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" asp-page="/admin/Index">Instructor Panel</a>
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end text-light" id="navbarNavAltMarkup">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link link-secondary" aria-current="page" asp-page="/admin/Index">DashBoard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-secondary" asp-page="/admin/instructors">Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-secondary" asp-page="/admin/courses">Statistics</a>
+                </li>
+        
+            </ul>
+      
+        </div>
+    </div>
+</nav>
+
+@RenderBody()
+
+
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
