@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace WebApplication3.Validators;
+namespace ELearnApp.Validators;
 
 public class IsAuthenticatedAttribute : ActionFilterAttribute
 {

@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Dapper;
 using ELearnApp.Models;
+using ELearnApp.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using WebApplication3.Extentions;
-using WebApplication3.Validators;
 
 namespace WebApplication3.Controllers;
 
