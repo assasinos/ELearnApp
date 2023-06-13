@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace WebApplication3.Models;
+﻿namespace ELearnApp.Models;
 
 public class UserModel
 {

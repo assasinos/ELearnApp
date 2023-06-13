@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using Dapper;
+using ELearnApp.Models;
+using ELearnApp.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MySqlConnector;
-using WebApplication3.Models;
-using WebApplication3.Validators;
 
 namespace ELearnApp.Pages.Admin;
 

@@ -1,9 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using WebApplication3.Validators;
 
-namespace WebApplication3.Models;
+namespace ELearnApp.Models;
 
 public class RegisterModel
 {

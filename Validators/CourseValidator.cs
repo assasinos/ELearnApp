@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using WebApplication3.Models;
+﻿using ELearnApp.Models;
+using FluentValidation;
 
-namespace WebApplication3.Validators;
+namespace ELearnApp.Validators;
 
 public class CourseValidator : AbstractValidator<CourseModel>
 {
