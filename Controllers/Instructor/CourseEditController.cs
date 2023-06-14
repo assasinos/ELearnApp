@@ -19,6 +19,12 @@ public class CourseEditController : Controller
     {
         _mySqlConnection = sqlConnection;
     }
+
+    #region HTTP PUT
+
+    
+
+
     
     
     [HttpPut]
@@ -101,5 +107,38 @@ public class CourseEditController : Controller
 
         return Ok(result);
     }
+    #endregion
+
+    #region HTTP DELETE
+
     
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteLesson([Required] LessonModel lessonModel)
+    {
+        var validator = new LessonDeleteValidator();
+
+        var validationResult = await validator.ValidateAsync(lessonModel);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors.FirstOrDefault());
+        }
+        
+        //Validate if the user is the instructor of the course
+        var user_uid = await User.GetUserUID();
+
+        var result = await _mySqlConnection.ExecuteAsync(
+            "Delete l from lessons l join courses c on l.course_uid = c.course_uid where lesson_uid = @lesson_uid and course_uid = @course_uid and c.instructor_uid = @user_uid",
+            new { lessonModel.lesson_uid, lessonModel.course_uid, user_uid});
+        if (result != 1)
+        {
+            return BadRequest("Delete failed");
+        }
+
+        return Ok();
+    }
+
+
+    #endregion
 }
