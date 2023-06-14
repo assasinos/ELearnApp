@@ -129,7 +129,7 @@ public class CourseEditController : Controller
         var user_uid = await User.GetUserUID();
 
         var result = await _mySqlConnection.ExecuteAsync(
-            "Delete l from lessons l join courses c on l.course_uid = c.course_uid where lesson_uid = @lesson_uid and course_uid = @course_uid and c.instructor_uid = @user_uid",
+            "Delete l from lessons l join courses c on l.course_uid = c.course_uid where l.lesson_uid = @lesson_uid and l.course_uid = @course_uid and c.instructor_uid = @user_uid",
             new { lessonModel.lesson_uid, lessonModel.course_uid, user_uid});
         if (result != 1)
         {
