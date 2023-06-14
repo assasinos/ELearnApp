@@ -34,9 +34,9 @@ public class Course : PageModel
         return Page();
     }
 
-    private async Task<IEnumerable<LessonModel>?> GetLessons(string courseUid)
+    private async Task<IEnumerable<LessonModel>?> GetLessons(string course_uid)
     {
-        return await _mySqlConnection.QueryAsync<LessonModel>("Select lesson_content,lesson_name,lesson_uid from lessons where course_uid = @courseUid", new { courseUid });
+        return await _mySqlConnection.QueryAsync<LessonModel>("Select lesson_content,lesson_name,lesson_uid from lessons where course_uid = @course_uid", new {course_uid});
     }
 
     private async Task<CourseModel?> GetCourse(string courseUid)
@@ -47,6 +47,6 @@ public class Course : PageModel
 
         return await _mySqlConnection.QueryFirstOrDefaultAsync<CourseModel>(
             "SELECT course_uid, created_at, description, featured, overview, title, imgsrc FROM courses WHERE courses.course_uid = @courseUid and courses.instructor_uid = @user_uid",
-            new { uid = courseUid });
+            new {courseUid, user_uid  });
     }
 }
