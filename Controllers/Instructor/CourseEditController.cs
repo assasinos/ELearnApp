@@ -45,5 +45,34 @@ public class CourseEditController : Controller
 
         return Ok();
     }
- 
+       
+    [HttpPut]
+    public async Task<IActionResult> UpdateLesson([Required] LessonModel lessonModel)
+    {
+        
+        var validator = new LessonUpdateValidator();
+
+        var validationResult = await validator.ValidateAsync(lessonModel);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors.FirstOrDefault());
+        }
+        
+        //For Validation if the user is the instructor of the course
+        var user_uid = await User.GetUserUID();
+        
+        lessonModel.lesson_content = Converter.Convert(lessonModel.lesson_content);
+
+        var result = await _mySqlConnection.ExecuteAsync(
+            "update lessons l join courses c on c.course_uid = l.course_uid set l.lesson_name = @Lesson_name,l.lesson_content = @lesson_content where l.lesson_uid = @lesson_uid and l.course_uid = @course_uid " +
+            "and c.instructor_uid = @user_uid",
+            new { lessonModel.lesson_name, lessonModel.lesson_content, lessonModel.lesson_uid, lessonModel.course_uid, user_uid });
+        if (result != 1)
+        {
+            return BadRequest("Update failed");
+        }
+
+        return Ok();
+    }   
 }
