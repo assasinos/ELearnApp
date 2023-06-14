@@ -75,4 +75,31 @@ public class CourseEditController : Controller
 
         return Ok();
     }   
+    
+    [HttpPut]
+    public async Task<IActionResult> CreateLesson(LessonModel lessonModel)
+    {
+        
+        
+        var validator = new LessonCreateValidator();
+
+        var validationResult = await validator.ValidateAsync(lessonModel);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors.FirstOrDefault());
+        }
+        
+        
+        lessonModel.lesson_content = Converter.Convert(lessonModel.lesson_content);
+        
+        
+        var result = await _mySqlConnection.QuerySingleAsync<string>(
+            "INSERT INTO lessons (`course_uid`,`lesson_name`,`lesson_content`) VALUES (@course_uid, @lesson_name,@lesson_content) RETURNING `lesson_uid`",
+            new {lessonModel.course_uid, lessonModel.lesson_name, lessonModel.lesson_content});
+
+
+        return Ok(result);
+    }
+    
 }
