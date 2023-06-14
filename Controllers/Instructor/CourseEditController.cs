@@ -107,6 +107,36 @@ public class CourseEditController : Controller
 
         return Ok(result);
     }
+    
+        
+    [HttpPut]
+    public async Task<IActionResult> CreateCourse([Required] CourseModel courseModel)
+    {
+        courseModel.Instructor = new(){user_uid = await User.GetUserUID()};
+        
+        
+        var validator = new CourseCreationValidator();
+        var ValidatorResult = await validator.ValidateAsync(courseModel);
+        if (!ValidatorResult.IsValid)
+        {
+            return BadRequest(ValidatorResult.Errors.FirstOrDefault());
+        }
+
+
+        var result = await _mySqlConnection.QuerySingleAsync<string>(
+            "insert into courses ( title, description, overview, imgsrc, instructor_uid) values (@title, @description, @overview, @imgsrc, @user_uid) RETURNING course_uid",
+            new {courseModel.title, courseModel.description, courseModel.overview, courseModel.imgsrc, courseModel.Instructor.user_uid});
+        if (string.IsNullOrWhiteSpace(result))
+        {
+            return BadRequest("Creation failed");
+        }
+
+        return Ok(result);
+    }
+    
+    
+    
+    
     #endregion
 
     #region HTTP DELETE
@@ -163,7 +193,6 @@ public class CourseEditController : Controller
 
         
         
-        //Result here might be 0 if no lessons are found
         var result = await _mySqlConnection.ExecuteAsync(
             "Delete from courses where course_uid = @course_uid",
             new {course_uid});
