@@ -139,6 +139,41 @@ public class CourseEditController : Controller
         return Ok();
     }
 
+    
+    //Should i allow the instructors to delete the course?
+    
+    [HttpDelete]
+    public async Task<IActionResult> DeleteCourse([Required] string course_uid)
+    {
+        //Ensure if the user is the instructor of the course
+        var user_uid = await User.GetUserUID();
+        if (await _mySqlConnection.QuerySingleAsync<int>("Select count(*) from courses c where c.instructor_uid = @user_uid and c.course_uid = @course_uid", new {user_uid, course_uid}) != 1)
+        {
+            return Forbid();
+        }
+        
+        //Ensure Foreign key constraints are deleted
+        await _mySqlConnection.ExecuteAsync(
+            "Delete from lessons where course_uid = @course_uid",
+            new {course_uid});
+        
+        await _mySqlConnection.ExecuteAsync(
+            "Delete from user_courses where course_uid = @course_uid",
+            new {course_uid});
+
+        
+        
+        //Result here might be 0 if no lessons are found
+        var result = await _mySqlConnection.ExecuteAsync(
+            "Delete from courses where course_uid = @course_uid",
+            new {course_uid});
+        if (result != 1)
+        {
+            return BadRequest("Delete failed");
+        }
+
+        return Ok();
+    }
 
     #endregion
 }
